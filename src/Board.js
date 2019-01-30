@@ -1,81 +1,32 @@
 import React, { Component } from 'react'
-import Note from './Note'
-import { FaPlus } from 'react-icons/fa'
+import Feed from './Feed'
+import Question from './Question'
+import Answer from './Answer'
+import DisplayQuestions from './DisplayQuestions'
 
-class Board extends Component{
+export default class Board extends React.Component{
 	constructor(props){
 		super(props)
 		this.state={
-			notes: []
+			name: "Winston Yang",
+			questions: ["test1", "test2", "test3"],
 		}
-		
-		this.eachNote = this.eachNote.bind(this)
-		this.update = this.update.bind(this)
-		this.remove = this.remove.bind(this)
-		this.add = this.add.bind(this)
-		this.nextId = this.nextId.bind(this)
+		this.addQuestion = this.addQuestion.bind(this)
 	}
 
-	componentWillMount(){
-		var self = this
-		if(this.props.count){
-			fetch('https://baconipsum.com/api/?type=all-meat&sentences=${this.props.count}')
-				.then(response => response.json())
-				.then(json => json[0].split('. ').forEach(sentence => self.add(sentence.substring(0,25))))
-		}
+	addQuestion(question){
+		this.setState((state) => ({
+      questions: state.questions.concat([question])
+    }))
 	}
 
-	nextId(){
-		this.uniqueId = this.uniqueId || 0
-		return this.uniqueId++
-	}
-
-	add(text){
-		this.setState(prevState => ({
-			notes: [
-				...prevState.notes,
-				{
-					id: this.nextId(),
-					note: text
-				}
-			]
-		}))
-	}
-
-	update(newText, i){
-		console.log('updating item at index', i, newText)
-		this.setState(prevState => ({
-			notes: prevState.notes.map(
-				note => (note.id !== i) ? note : {...note, note: newText}
-			)
-		}))
-	}
-
-	remove(id){
-		console.log('removing item at', id)
-		this.setState(prevState => ({
-			notes: prevState.notes.filter(note => note.id !== id)
-		}))
-	}
-
-	eachNote(note, i){
-		return (
-			<Note key={i}
-				  index={i}
-				  onChange={this.update}
-				  onRemove={this.remove}>
-				  {note.note}
-			</Note>
-		)
-	}
 	render() {
 		return (
-			<div className="board">
-				{this.state.notes.map(this.eachNote)}
-				<button onClick={this.add.bind(null, "New Note")} id="add"><FaPlus /></button>
-			</div>
+			<div>
+        <h2> Feed for: {this.state.name} </h2>
+        <Feed addNew={this.addQuestion} />
+        <DisplayQuestions list={this.state.questions} />
+      </div>
 		)
 	}
 }
-
-export default Board
