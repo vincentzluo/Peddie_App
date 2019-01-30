@@ -3,12 +3,13 @@ import Feed from './Feed'
 import Question from './Question'
 import Answer from './Answer'
 import DisplayQuestions from './DisplayQuestions'
+import * as firebase from 'firebase';
+import 'firebase/firestore';
 
 export default class Board extends React.Component{
 	constructor(props){
 		super(props)
 		this.state={
-			name: "Winston Yang",
 			questions: ["test1", "test2", "test3"],
 		}
 		this.addQuestion = this.addQuestion.bind(this)
@@ -21,10 +22,9 @@ export default class Board extends React.Component{
 	}
 
 	render() {
+		const db = firebase.firestore()
 		return (
 			<div>
-        <h2> Feed for: {this.state.name} </h2>
-        <Feed addNew={this.addQuestion} />
         <DisplayQuestions list={this.state.questions} />
       </div>
 		)

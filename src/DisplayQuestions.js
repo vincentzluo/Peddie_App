@@ -28,7 +28,7 @@ export default class DisplayQuestions extends React.Component
         <div>
           <h3> Questions </h3>
             {this.props.list.map((question) => {
-              return <li> {question} <sub> Posted at: {currentTime} on {currentDate}</sub> </li>
+              return <li> {question} </li>
             })}
          </div>
       )

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-	
+import Board from './Board'
+
 class Questions extends Component {
 
 	constructor(props) {
@@ -66,6 +67,7 @@ class Questions extends Component {
 			          </form>
 			        </div>
 			      </div>
+						<Board board/>
 			    </div>
 			  </div>
 			</div>

@@ -10,6 +10,7 @@ import Navigation from './Navigation';
 import Login from './Login'
 import Register from './Register'
 import Questions from './Questions'
+import Board from './Board'
 
 
 
