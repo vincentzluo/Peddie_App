@@ -3,7 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+<<<<<<< HEAD
     "moment": "^2.23.0",
+=======
+    "@reach/router": "^1.2.1",
+    "bootstrap": "^4.2.1",
+    "firebase": "^5.7.2",
+>>>>>>> 617bf00f5921e0b9e54bd53167d54eb3c73d4f41
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-icons": "^3.2.2",
