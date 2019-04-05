@@ -1,11 +1,16 @@
 import React, { Component } from 'react'
+import QuestionsList from './QuestionsList'
+import * as firebase from 'firebase';
+import 'firebase/firestore';
 	
 class Questions extends Component {
 
 	constructor(props) {
 		super(props)
 		this.state = {
-			questionName: ''
+			questionName: '',
+			user:'',
+			date:''
 		}
 		this.handleChange = this.handleChange.bind(this)
 		this.handleSubmit = this.handleSubmit.bind(this)
@@ -15,7 +20,7 @@ class Questions extends Component {
 		const itemName = e.target.name
 		const itemValue = e.target.value
 		this.setState({[itemName]: itemValue}, () => {
-			if (this.state.passOne != this.state.passTwo) {
+			if (this.state.passOne = this.state.passTwo) {
 				this.setState({ errorMessage: "Passwords do not match"})
 			}
 			else {
@@ -30,7 +35,46 @@ class Questions extends Component {
 		this.setState({questionName: ''})
 	}
 
+	timeSince(date) {
 
+	  var seconds = Math.floor((new Date() - date) / 1000);
+
+	  var interval = Math.floor(seconds / 31536000);
+
+	  if (interval > 1) {
+	    return interval + " years";
+	  }
+	  interval = Math.floor(seconds / 2592000);
+	  if (interval > 1) {
+	    return interval + " months";
+	  }
+	  interval = Math.floor(seconds / 86400);
+	  if (interval > 1) {
+	    return interval + " days";
+	  }
+	  interval = Math.floor(seconds / 3600);
+	  if (interval > 1) {
+	    return interval + " hours";
+	  }
+	  interval = Math.floor(seconds / 60);
+	  if (interval > 1) {
+	    return interval + " minutes";
+	  }
+	  return Math.floor(seconds) + " seconds";
+	}
+
+
+
+
+	// getDate = questionName => {
+	// 	const db = firebase.firestore()
+	// 	var docRef = db.collection("questions").doc(questionName)
+	// 	docRef.get().then(function(doc){
+	// 		var date = doc.data().date
+	// 		console.log(date)
+	// 		return date
+	// 	})
+	// }
 
 
 	render() {
@@ -66,6 +110,25 @@ class Questions extends Component {
 			          </form>
 			        </div>
 			      </div>
+			     </div>
+			     <div className="col-11 col-md-6 text-center">
+			      	<div className="card border-top-0 rounded-0">
+				      {this.props.questions && this.props.questions.length ? (
+				      	<div className="card-body py-2">
+				      		<h4 className="card-title font-weight-light m-0">
+				      			Question Feed
+				      		</h4>
+				      	</div>
+				      ) : null}
+
+				      {this.props.questions && (
+				      	<div className="list-group list-group-flush">
+				      		<QuestionsList timeSince={this.timeSince} getDate={this.getDate} user={this.props.user} questions={this.props.questions}/>
+				      	</div>
+
+				      )}
+
+				    </div>
 			    </div>
 			  </div>
 			</div>

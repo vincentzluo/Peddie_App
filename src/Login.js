@@ -21,7 +21,7 @@ class Login extends Component {
 		const itemName = e.target.name
 		const itemValue = e.target.value
 		this.setState({[itemName]: itemValue}, () => {
-			if (this.state.passOne != this.state.passTwo) {
+			if (this.state.passOne !== this.state.passTwo) {
 				this.setState({ errorMessage: "Passwords do not match"})
 			}
 			else {

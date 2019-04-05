@@ -10,7 +10,7 @@ import Navigation from './Navigation';
 import Login from './Login'
 import Register from './Register'
 import Questions from './Questions'
-
+// import * as admin from 'firebase-admin'
 
 
 class App extends Component {
@@ -21,28 +21,41 @@ class App extends Component {
 			user: "",
 			email: "",
 			displayName: null,
-			userID: null
-
+			userID: null,
 		}
 	}
 
 	componentDidMount() {
-		// const db = firebase.firestore()
-		// // var name
-		// // var email
-	 //    db.collection("users").where("name", "==", "Vincent Luo").get().then((snapshot) => {
-		// 	snapshot.docs.forEach(doc => {
-		// 		let user = doc.data().name
-		// 		let email = doc.data().email
-		// 		this.setState({ user: user, email: email  })
-		// 	})
-		// })
-		firebase.auth().onAuthStateChanged(user => {
-			if (user) {
+
+		firebase.auth().onAuthStateChanged(FBUser => {
+			if (FBUser) {
 				this.setState({
-					user: user,
-					displayName: user.displayName,
-					userID: user.uid
+					user: FBUser,
+					displayName: FBUser.displayName,
+					userID: FBUser.uid
+				})
+				const db = firebase.firestore()
+				db.collection("questions").orderBy("date", "desc").onSnapshot((querySnapshot) => {
+					let questionsList = []	
+					querySnapshot.forEach(function(doc) {
+						questionsList.push({
+							question: doc.data,
+							questionName: doc.id,
+							date: doc.data().date
+						})
+					})
+					
+					this.setState({
+					questions: questionsList,
+					numQuestions: questionsList.length
+					})
+
+			})
+
+			}
+			else {
+				this.setState({
+					user: null
 				})
 			}
 		})
@@ -75,23 +88,24 @@ class App extends Component {
 		})
 	}
 
-
 	addQuestion = questionName => {
 		const db = firebase.firestore()
 		db.collection("questions").doc(questionName).set({
-			asker: this.state.displayName
+			askerID: this.state.user.uid,
+			askerName: this.state.user.displayName,
+			date: new Date().getTime()
 		})
 	}
+
 
 	render() {
 		return (
 			<div>
 				<Navigation user={this.state.user} logOutUser={this.logOutUser}/>
-				{this.state.user && <Welcome userName={this.state.displayName} logOutUser={this.logOutUser}/>}
 				<Router>
 					<Home path="/" user={this.state.user}/>
 					<Login path="/login" user={this.state.user}/>
-					<Questions path="/questions" addQuestion={this.addQuestion}/>
+					<Questions path="/questions" user={this.state.user} questions={this.state.questions} addQuestion={this.addQuestion} />
 					<Register path="/register" registerUser={this.registerUser}/>
 				</Router>
 			</div>

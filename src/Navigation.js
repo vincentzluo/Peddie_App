@@ -15,8 +15,8 @@ class Navigation extends Component {
 			    </Link>
 			    <div className="navbar-nav ml-auto">
 			        {user && (
-			        	<Link className="nav-item nav-link" to="/meetings">
-			          		meetings
+			        	<Link className="nav-item nav-link" to="/questions">
+			          		questions
 			        	</Link>
 			       
 			        )}
