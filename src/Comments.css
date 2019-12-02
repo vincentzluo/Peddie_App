@@ -1,0 +1,11 @@
+.commentForm {
+	font-size:13px;
+	font-family: times;
+	height: 100px;
+	width: 400px;
+	margin-top: 10px;
+}
+
+.commentButton {
+	margin-top: 10px;
+}

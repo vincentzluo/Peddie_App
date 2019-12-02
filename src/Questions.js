@@ -8,6 +8,7 @@ class Questions extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			questionID: '',
 			questionName: '',
 			user:'',
 			date:''
@@ -19,14 +20,7 @@ class Questions extends Component {
 	handleChange(e) {
 		const itemName = e.target.name
 		const itemValue = e.target.value
-		this.setState({[itemName]: itemValue}, () => {
-			if (this.state.passOne = this.state.passTwo) {
-				this.setState({ errorMessage: "Passwords do not match"})
-			}
-			else {
-				this.setState({ errorMessage: null})
-			}
-		})
+		this.setState({[itemName]: itemValue})																																									
 	}
 
 	handleSubmit(e) {
@@ -63,18 +57,6 @@ class Questions extends Component {
 	  return Math.floor(seconds) + " seconds";
 	}
 
-
-
-
-	// getDate = questionName => {
-	// 	const db = firebase.firestore()
-	// 	var docRef = db.collection("questions").doc(questionName)
-	// 	docRef.get().then(function(doc){
-	// 		var date = doc.data().date
-	// 		console.log(date)
-	// 		return date
-	// 	})
-	// }
 
 
 	render() {
@@ -123,7 +105,7 @@ class Questions extends Component {
 
 				      {this.props.questions && (
 				      	<div className="list-group list-group-flush">
-				      		<QuestionsList timeSince={this.timeSince} getDate={this.getDate} user={this.props.user} questions={this.props.questions}/>
+				      		<QuestionsList timeSince={this.timeSince} getDate={this.getDate} user={this.state.userID} questions={this.props.questions} showComments={this.props.showComments}/>
 				      	</div>
 
 				      )}
