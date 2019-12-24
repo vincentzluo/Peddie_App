@@ -17,6 +17,10 @@ class Questions extends Component {
 		this.handleSubmit = this.handleSubmit.bind(this)
 	}
 
+	componentDidMount() {
+		document.getElementById("buttonAdd").disabled = true;
+	}
+
 	handleChange(e) {
 		const itemName = e.target.name
 		const itemValue = e.target.value
@@ -29,34 +33,13 @@ class Questions extends Component {
 		this.setState({questionName: ''})
 	}
 
-	timeSince(date) {
-
-	  var seconds = Math.floor((new Date() - date) / 1000);
-
-	  var interval = Math.floor(seconds / 31536000);
-
-	  if (interval > 1) {
-	    return interval + " years";
-	  }
-	  interval = Math.floor(seconds / 2592000);
-	  if (interval > 1) {
-	    return interval + " months";
-	  }
-	  interval = Math.floor(seconds / 86400);
-	  if (interval > 1) {
-	    return interval + " days";
-	  }
-	  interval = Math.floor(seconds / 3600);
-	  if (interval > 1) {
-	    return interval + " hours";
-	  }
-	  interval = Math.floor(seconds / 60);
-	  if (interval > 1) {
-	    return interval + " minutes";
-	  }
-	  return Math.floor(seconds) + " seconds";
+	buttonEnabler() {
+		if (document.getElementById("questionInput").value === "") {
+			document.getElementById("buttonAdd").disabled = true;
+		} else {
+			document.getElementById("buttonAdd").disabled = false;
+		}
 	}
-
 
 
 	render() {
@@ -74,6 +57,8 @@ class Questions extends Component {
 			                type="text"
 			                className="form-control"
 			                name="questionName"
+			                id="questionInput"
+			                onKeyUp={this.buttonEnabler}
 			                placeholder="Question name"
 			                aria-describedby="buttonAdd"
 			                value={this.state.questionName}
@@ -105,7 +90,7 @@ class Questions extends Component {
 
 				      {this.props.questions && (
 				      	<div className="list-group list-group-flush">
-				      		<QuestionsList timeSince={this.timeSince} getDate={this.getDate} user={this.state.userID} questions={this.props.questions} showComments={this.props.showComments}/>
+				      		<QuestionsList timeSince={this.props.timeSince} getDate={this.getDate} user={this.state.userID} questions={this.props.questions} showComments={this.props.showComments}/>
 				      	</div>
 
 				      )}

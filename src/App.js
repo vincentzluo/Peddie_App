@@ -23,7 +23,9 @@ class App extends Component {
 			email: "",
 			displayName: null,
 			userID: null,
-			questionID: ""
+			questionID: "",
+			questions: [],
+			question: ""
 		}
 	}
 
@@ -42,16 +44,15 @@ class App extends Component {
 					querySnapshot.forEach(function(doc) {
 						questionsList.push({
 							question: doc.data,
-							questionName: doc.id,
+							questionName: doc.data().questionName,
 							askerName: doc.data().askerName,
-							questionID: doc.data().questionID,		
+							questionID: doc.id,		
 							date: doc.data().date
 						})
 					})
 					
 					this.setState({
 					questions: questionsList,
-					numQuestions: questionsList.length
 					})
 
 			})
@@ -94,19 +95,49 @@ class App extends Component {
 
 	addQuestion = questionName => {
 		const db = firebase.firestore()
-		db.collection("questions").doc(questionName).set({
-			questionID: Math.random().toString(32).replace(/[^a-z]+/g, '').substr(2, 10),
+		let questionID = Date.now().toString(36) + Math.random().toString(36).substr(2, 5).toUpperCase();
+		db.collection("questions").doc(questionID).set({
+			questionName: questionName,
 			askerID: this.state.user.uid,
 			askerName: this.state.user.displayName,
 			date: new Date().getTime()
 		})
 	}
 
-	showComments = questionID => {
+	timeSince(date) {
+
+	  var seconds = Math.floor((new Date() - date) / 1000);
+
+	  var interval = Math.floor(seconds / 31536000);
+
+	  if (interval > 1) {
+	    return interval + " years";
+	  }
+	  interval = Math.floor(seconds / 2592000);
+	  if (interval > 1) {
+	    return interval + " months";
+	  }
+	  interval = Math.floor(seconds / 86400);
+	  if (interval > 1) {
+	    return interval + " days";
+	  }
+	  interval = Math.floor(seconds / 3600);
+	  if (interval > 1) {
+	    return interval + " hours";
+	  }
+	  interval = Math.floor(seconds / 60);
+	  if (interval > 1) {
+	    return interval + " minutes";
+	  }
+	  return Math.floor(seconds) + " seconds";
+	}
+
+	showComments = question => {
 		this.setState({
-			questionID: this.questionID
-		})
-		navigate('./comments/'+questionID)
+			question: question,
+			questionID: question.questionID
+		}) 
+		navigate('./comments/'+this.state.questionID)
 	}
 
 
@@ -117,9 +148,9 @@ class App extends Component {
 				<Router>
 					<Home path="/" user={this.state.user}/>
 					<Login path="/login" user={this.state.user}/>
-					<Questions path="/questions" user={this.state.user} questions={this.state.questions} addQuestion={this.addQuestion} showComments={this.showComments}/>
+					<Questions path="/questions" timeSince={this.timeSince} user={this.state.user} questions={this.state.questions} addQuestion={this.addQuestion} showComments={this.showComments}/>
 					<Register path="/register" registerUser={this.registerUser}/>
-					<Comments path="/comments/:this.state.questionID" questionID={this.state.questionID} user={this.state.user}/>
+					<Comments path="/comments/:this.state.questionID" timeSince={this.timeSince} question={this.state.question} user={this.state.user}/>
 				</Router>
 			</div>
 		)

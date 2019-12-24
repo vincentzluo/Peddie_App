@@ -21,7 +21,7 @@ class CommentList extends Component {
 		        Comment{props.comments.length > 0 ? "s" : ""}
 		      </h5>
 
-		      {props.comments.length === 0 && !props.loading ? (
+		      {props.comments.length === 0 ? (
 		        <div className="alert text-center alert-info">
 		          Be the first to comment
 		        </div>

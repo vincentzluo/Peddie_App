@@ -9,7 +9,7 @@ class QuestionsList extends Component {
 			user: "",
 			email: "",
 			displayName: null,
-			userID: this.props.userID,
+			userID: this.props.user,
 		}
 	}
 
@@ -19,7 +19,7 @@ class QuestionsList extends Component {
 		const {questions} = this.props;
 		const myQuestions = questions.map(item => {
 			return(
-				<div id="post" onClick={() => {this.props.showComments(item.questionID)}} className="list-group-item d-flex" key={item.questionID}>
+				<div id="post" onClick={() => {this.props.showComments(item)}} className="list-group-item d-flex" key={item.questionID}>
 					
 					<section className="pl-3 text-left align-slf-center">
 							{item.questionName}

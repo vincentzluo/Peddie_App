@@ -9,10 +9,7 @@ class Comments extends Component {
 		this.state = {
 			user: "",
 			email: "",
-			displayName: null,
-			userID: this.props.userID,
-			questionID: "",
-			comment: ""
+			commentInput: ""
 		}
 
 	    this.handleChange = this.handleChange.bind(this);
@@ -27,24 +24,25 @@ class Comments extends Component {
 
 	 
 	  handleSubmit(e) {
-	    // prevent default form submission
 	    e.preventDefault();
-	    this.setState({comment: ''})
-	    //...
+	    this.setState({commentInput: ''})
 	  }
 
 	  render() {
 	    return (
 	      <div className="row justify-content-center">
+	      	<div className="pl-3 text-left align-slf-center">
+							{this.props.question.questionName}
+							<p>posted {this.props.timeSince(this.props.question.date)} ago by {this.props.question.askerName}</p>
+			</div>
 	        <form className="form-group" onSubmit={this.handleSubmit}>
 	          <div className="input-group">
 	            <textarea
 	              className="commentForm"
 	              onChange={this.handleChange}
-	              value={this.state.comment}
+	              value={this.state.commentInput}
 	              placeholder="Share Your Thoughts"
-	              name="comment"
-
+	              name="commentInput"
 	            />
 	          </div>
 
